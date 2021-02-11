@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homework 02 - Updated Search</title>
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Create and Find Users</h1>
+      <div class="link-group">
+        <a class="nav-links">CREATE USER</a>
+        <a class="nav-links">USER TABLE</a>
+      </div>
+    </header>
+    <main>
+      <article id="create-user-container">
+        <section class="create-container">
+          <h2>Create a new User</h2>
+          <h3 id="create-error-msg"></h3>
+          <form id="user-form">
+            <label for="first-name-input">First Name:</label>
+            <input
+              type="text"
+              id="first-name-input"
+              class="user-create-inputs"
+            />
+            <br />
+            <label for="last-name-input">Last Name:</label>
+            <input
+              type="text"
+              id="last-name-input"
+              class="user-create-inputs"
+            />
+            <br />
+            <label for="age-input">Age:</label>
+            <input type="number" id="age-input" class="user-create-inputs" />
+            <br />
+            <label for="city-input">City:</label>
+            <input type="text" id="city-input" class="user-create-inputs" />
+            <br />
+            <label for="country-input">Country:</label>
+            <input type="text" id="country-input" class="user-create-inputs" />
+            <br />
+            <label for="spouse-input">Spouse (optional):</label>
+            <input type="text" id="spouse-input" class="user-create-inputs" />
+            <br />
+            <label for="pet-type-input">Type of pet ?</label>
+            <select
+              name="select"
+              id="pet-type-input"
+              class="user-create-inputs"
+            >
+              <option value="" selected>No Pet</option>
+              <option value="dog">Dog</option>
+              <option value="cat">Cat</option>
+              <option value="fish">Fish</option>
+              <option value="lizard">Lizard</option>
+              <option value="snake">Snake</option>
+              <option value="parrot">Parrot</option>
+              <option value="hamster">Hamster</option>
+            </select>
+            <br />
+            <label for="pet-name-input">Pet Name (optional):</label>
+            <input type="text" id="pet-name-input" class="user-create-inputs" />
+            <br />
+            <button type="button" id="create-user-btn">Create User</button>
+          </form>
+        </section>
+      </article>
+      <article id="search-users-container">
+        <section>
+          <div class="search--container">
+            <label for="search--input">Search user:</label>
+            <input type="text" id="search--input" />
+            <button type="button" id="search--button">Search</button>
+            <button type="button" id="reset--button">Reset</button>
+            <h3 id="error--msg"></h3>
+          </div>
+          <section class="table--container">
+            <table id="users--table"></table>
+          </section>
+        </section>
+      </article>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
