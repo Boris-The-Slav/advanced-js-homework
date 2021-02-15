@@ -122,6 +122,7 @@ const printAllUsers = (displayedArr, optionalArr) => {
   //creating listeners for the buttons
   tableButtons.forEach((button, i) => {
     button.addEventListener("click", () => {
+      //[this actually splices and modifies the original array]
       if (optionalArr) {
         optionalArr.splice(optionalArr.indexOf(displayedArr[i]), 1);
       } else {
@@ -130,6 +131,7 @@ const printAllUsers = (displayedArr, optionalArr) => {
         //deleting elements is always correct
         printAllUsers(displayedArr, optionalArr);
       }
+      //[if i just want to change the displayed results the below line is enough]
       tableUserRows[i].remove();
     });
   });
@@ -143,8 +145,13 @@ const deleteUserFromInput = (arr, searchInput) => {
   const filteredArr = arr.filter(
     (el) => el.userId === Number(searchInput.value)
   );
-
   if (filteredArr.length === 1) {
+    //Unused filter method that only changes the display
+    // printAllUsers(
+    //   users.filter((el) => el.userId !== filteredArr[0].usedId)
+    // );
+
+    //This modifies the original array
     arr.splice(arr.indexOf(filteredArr[0]), 1);
     searchInput.value = "";
     printAllUsers(users);
