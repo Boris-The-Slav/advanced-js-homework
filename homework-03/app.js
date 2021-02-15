@@ -43,6 +43,9 @@ const users = [
   new Person("John", "Marston", 67, "Dallas", "USA", "Janice Marston", "other"),
 ];
 
+//i'm running all the logic on the original array, i could've just made a shallow copy
+// with destructuring but i decided not to
+
 //[dom selectors]
 
 //dom selections for search section
