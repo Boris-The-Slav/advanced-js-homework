@@ -100,7 +100,7 @@ const createUser = (allInputs) => new Person(...allInputs);
 const printOneUser = (user) => {
   searchInput.value = "";
   searchErrorMsg.innerText = "";
-  userTableBody.innerHTML += `<tr>
+  userTableBody.innerHTML += `<tr class="user-row">
     <td>${user.userId}</td>
     <td>${user.fullName}</td>
     <td>${user.age}</td>
@@ -111,34 +111,31 @@ const printOneUser = (user) => {
     <td><button type = "button" class="table-delete-buttons">❌</button></button>`;
 };
 
-//declaring a table buttons variable
-let tableButtons;
-
 //function to print all users,refresh the dom and seelect all the buttons
-const printAllUsers = (arr) => {
+//optionalArr is only used when running this function through the search part
+//so that it modifies the original array when deleting
+const printAllUsers = (displayedArr, optionalArr) => {
   userTableBody.innerHTML = "";
-  arr.forEach((user) => printOneUser(user));
-  tableButtons = document.querySelectorAll(".table-delete-buttons");
-};
-
-//functioon that prints all users and adds event listeners to the delete
-//buttons or any button that would eventually be put into the table
-//the arr2 parameter is only used when we are running this thorugh the search funciion
-//so we can manipulate both arrays at once
-const printAllAddListeners = (arr, arr2) => {
-  printAllUsers(arr);
+  displayedArr.forEach((user) => printOneUser(user));
+  const tableButtons = document.querySelectorAll(".table-delete-buttons");
+  const tableUserRows = document.querySelectorAll(".user-row");
+  //creating listeners for the buttons
   tableButtons.forEach((button, i) => {
     button.addEventListener("click", () => {
-      if (arr2) {
-        arr2.splice(users.indexOf(arr[i]), 1);
+      if (optionalArr) {
+        optionalArr.splice(optionalArr.indexOf(displayedArr[i]), 1);
+      } else {
+        displayedArr.splice(i, 1);
+        //calling the function here again to update the indexes so that
+        //deleting elements is always correct
+        printAllUsers(displayedArr, optionalArr);
       }
-      arr.splice(i, 1);
-      printAllAddListeners(arr, arr2);
+      tableUserRows[i].remove();
     });
   });
 };
-//calling above function to create the starting table and the listeners
-printAllAddListeners(users);
+
+printAllUsers(users);
 
 //deleting users by id from the input field
 const deleteUserFromInput = (arr, searchInput) => {
@@ -150,7 +147,7 @@ const deleteUserFromInput = (arr, searchInput) => {
   if (filteredArr.length === 1) {
     arr.splice(arr.indexOf(filteredArr[0]), 1);
     searchInput.value = "";
-    printAllAddListeners(users);
+    printAllUsers(users);
   } else {
     searchErrorMsg.innerText = "User Not Found";
   }
@@ -165,7 +162,7 @@ const displaySearch = () => {
       user.userId === Number(searchInput.value)
   );
   filteredUsers.length !== 0
-    ? printAllAddListeners(filteredUsers, users)
+    ? printAllUsers(filteredUsers, users)
     : (searchErrorMsg.innerText = "User Not Found");
 };
 
@@ -174,7 +171,7 @@ const displaySearch = () => {
 //handles for search section
 searchButton.addEventListener("click", displaySearch);
 resetButton.addEventListener("click", () => {
-  printAllAddListeners(users);
+  printAllUsers(users);
 });
 //handlers for deleting users
 deleteButton.addEventListener("click", () => {
@@ -197,9 +194,6 @@ createUserBtn.addEventListener("click", () => {
     createErrorMsg.innerText = "Please fill all fields that are not optional";
   }
   cleanInputs([...createInputsMandatory, ...createInputsOptional, petInput]);
-  //calling the deletion funct to always have event listeners on the buttons
-  //even after the dom is refreshed
-  printAllAddListeners(users);
 });
 
 //handlers for changing the page
