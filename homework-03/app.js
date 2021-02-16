@@ -122,7 +122,8 @@ const printAllUsers = (arr) => {
 printAllUsers(users);
 
 //funciton for adding listeners to the buttons
-const createTableButtonListeners = () => {
+//event delegation is magical what else to say
+const createTableBodyListener = () => {
   userTableBody.addEventListener("click", (e) => {
     if (e.target.classList.contains("table-delete-buttons")) {
       const index = users.findIndex(
@@ -135,7 +136,7 @@ const createTableButtonListeners = () => {
     }
   });
 };
-createTableButtonListeners();
+createTableBodyListener();
 
 //deleting users by id from the input field
 const deleteUserFromInput = (arr, searchInput) => {
