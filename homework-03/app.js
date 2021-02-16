@@ -44,7 +44,7 @@ const users = [
 ];
 
 //i'm running all the logic on the original array, i could've just made a shallow copy
-// with destructuring but i decided not to
+// with destructuring but i decided not to like this const usersCopy = [...users]
 
 //[dom selectors]
 
@@ -114,6 +114,7 @@ const printOneUser = (user) => {
     <td><button type = "button" class="table-delete-buttons">❌</button></button>`;
 };
 
+//function that refreshes the dom
 const printAllUsers = (arr) => {
   userTableBody.innerHTML = "";
   arr.forEach((user) => printOneUser(user));
