@@ -114,33 +114,28 @@ const printOneUser = (user) => {
     <td><button type = "button" class="table-delete-buttons">❌</button></button>`;
 };
 
-//function to print all users,refresh the dom and seelect all the buttons
-//optionalArr is only used when running this function through the search part
-//so that it modifies the original array when deleting
-const printAllUsers = (displayedArr, optionalArr) => {
+const printAllUsers = (arr) => {
   userTableBody.innerHTML = "";
-  displayedArr.forEach((user) => printOneUser(user));
-  const tableButtons = document.querySelectorAll(".table-delete-buttons");
-  const tableUserRows = document.querySelectorAll(".user-row");
-  //creating listeners for the buttons
-  tableButtons.forEach((button, i) => {
-    button.addEventListener("click", () => {
-      //[this actually splices and modifies the original array]
-      if (optionalArr) {
-        optionalArr.splice(optionalArr.indexOf(displayedArr[i]), 1);
-      } else {
-        displayedArr.splice(i, 1);
-        //calling the function here again to update the indexes so that
-        //deleting elements is always correct
-        printAllUsers(displayedArr, optionalArr);
-      }
-      //[if i just want to change the displayed results the below line is enough]
-      tableUserRows[i].remove();
-    });
+  arr.forEach((user) => printOneUser(user));
+};
+//calling the function at start
+printAllUsers(users);
+
+//funciton for adding listeners to the buttons
+const createTableButtonListeners = () => {
+  userTableBody.addEventListener("click", (e) => {
+    if (e.target.classList.contains("table-delete-buttons")) {
+      const index = users.findIndex(
+        (el) =>
+          el.userId ===
+          Number(e.target.parentElement.parentElement.cells[0].innerText)
+      );
+      users.splice(index, 1);
+      e.target.parentElement.parentElement.remove();
+    }
   });
 };
-
-printAllUsers(users);
+createTableButtonListeners();
 
 //deleting users by id from the input field
 const deleteUserFromInput = (arr, searchInput) => {
