@@ -124,20 +124,19 @@ printAllUsers(users);
 
 //funciton for adding listeners to the buttons
 //event delegation is magical what else to say
-const createTableBodyListener = () => {
+const createTableBodyListener = (arr) => {
   userTableBody.addEventListener("click", (e) => {
     if (e.target.classList.contains("table-delete-buttons")) {
-      const index = users.findIndex(
+      const index = arr.findIndex(
         (el) =>
-          el.userId ===
-          Number(e.target.parentElement.parentElement.cells[0].innerText)
+          el.userId === Number(e.target.closest(".user-row").cells[0].innerText)
       );
-      users.splice(index, 1);
-      e.target.parentElement.parentElement.remove();
+      arr.splice(index, 1);
+      e.target.closest(".user-row").remove();
     }
   });
 };
-createTableBodyListener();
+createTableBodyListener(users);
 
 //deleting users by id from the input field
 const deleteUserFromInput = (arr, searchInput) => {
