@@ -55,6 +55,9 @@ tr th:nth-of-type(3) {
 th {
   background-color: lightblue;
 }
+tr button {
+  width: 50px;
+}
 
 .table-container {
   width: 1000px;

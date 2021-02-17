@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homework 04 - Edit</title>
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  <body>
+    <header>
+      <h1>The Table Homework</h1>
+      <div class="link-group">
+        <a class="nav-links">CREATE USER</a>
+        <a class="nav-links">USER TABLE</a>
+      </div>
+    </header>
+    <main>
+      <article id="create-user-container">
+        <section class="create-container">
+          <h2>Create a new User</h2>
+          <h3 id="create-error-msg"></h3>
+          <form id="user-form">
+            <label for="first-name-input">First Name:</label>
+            <input
+              type="text"
+              id="first-name-input"
+              class="user-create-inputs-mandatory"
+            />
+            <br />
+            <label for="last-name-input">Last Name:</label>
+            <input
+              type="text"
+              id="last-name-input"
+              class="user-create-inputs-mandatory"
+            />
+            <br />
+            <label for="age-input">Age:</label>
+            <input type="number" id="age-input" class="user-create-inputs-mandatory" />
+            <br />
+            <label for="city-input">City:</label>
+            <input type="text" id="city-input" class="user-create-inputs-mandatory" />
+            <br />
+            <label for="country-input">Country:</label>
+            <input type="text" id="country-input" class="user-create-inputs-mandatory" />
+            <br />
+            <label for="spouse-input">Spouse (optional):</label>
+            <input type="text" id="spouse-input" class="user-create-inputs-optional" />
+            <br />
+            <label for="pet-type-input">What type of pets do you keep?</label>
+            <select name="" id="pet-type-input" multiple>
+              <option value="dog">Dog</option>
+              <option value="cat">Cat</option>
+              <option value="fish">Fish</option>
+              <option value="snake">Snake</option>
+              <option value="lizzard">Lizzard</option>
+              <option value="parrot">Parrot</option>
+              <option value="other">Other</option>
+            </select>
+            <br />
+            <button type="button" id="create-user-btn">Create User</button>
+          </form>
+        </section>
+      </article>
+      <article id="search-users-container">
+        <section class="table-inputs">
+          <div class="search-container">
+            <label for="search-input">Search user:</label>
+            <input type="text" id="search-input" placeholder="fullname or id"/>
+            <button type="button" id="search-button">Search</button>
+            
+          </div>
+          <div id="delete-container">
+            <label for="delete-input">Delete user:</label>
+            <input type="number" id="delete-input" placeholder="user id">
+            <button type="button" id="delete-button">Delete</button>
+          </div>
+        </section>
+          <section class="table-container">
+            <h3 id="error-msg"></h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Full Name</th>
+                  <th>Age</th>
+                  <th>Marriage Status</th>
+                  <th>City</th>
+                  <th>Country</th>
+                  <th>Pets</th>
+                  <th>Action</th>
+                </tr>
+                <tbody id="users-table"></tbody>
+              </thead>
+            </table>
+            <button type="button" id="reset-button">Reset</button>
+          </section>
+      </article>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
