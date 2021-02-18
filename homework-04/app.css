@@ -20,14 +20,20 @@ header div {
 a {
   font-size: 20px;
   font-weight: 600;
-  background-color: lightblue;
+  background-color: rgb(238, 251, 255);
   padding: 15px;
   margin-left: 20px;
   border: 2px solid black;
 }
+a:hover {
+  background-color: lightskyblue;
+  transition: 0.5s;
+  cursor: pointer;
+}
 table {
   border-collapse: collapse;
 }
+
 form {
   display: flex;
   flex-direction: column;
@@ -35,10 +41,14 @@ form {
   border: 3px solid lightgray;
   width: 300px;
   padding: 20px;
+  height: 620px;
 }
 form button {
-  width: 100px;
+  width: 120px;
+  height: 40px;
+  font-size: 14px;
 }
+
 th,
 td {
   border: 2px solid black;
@@ -118,6 +128,9 @@ select option {
 }
 #create-user-btn {
   align-self: center;
+  margin-top: 20px;
+  padding: 0px;
+  font-weight: 600;
 }
 #reset-button {
   position: absolute;
@@ -126,4 +139,10 @@ select option {
   width: 100px;
   font-size: 18px;
   margin: 20px;
+}
+
+.disabled-link {
+  pointer-events: none;
+  cursor: default;
+  color: lightgray;
 }

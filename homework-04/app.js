@@ -116,6 +116,16 @@ let rowUserId;
 
 //[functions]
 
+//function for disabling the table nav link when editing
+
+function disableLink(link, isEditing) {
+  if (isEditing) {
+    link.classList.add("disabled-link");
+  } else {
+    link.classList.remove("disabled-link");
+  }
+}
+
 //function for displaying different elements
 const changePage = (show, hide) => {
   show.style.display = "block";
@@ -209,6 +219,7 @@ const createTableBodyListener = (arr) => {
       rowUserId = Number(e.target.closest(".user-row").cells[0].innerText);
       editUserDisplay(users, rowUserId);
       isEditing = true;
+      disableLink(links[1], isEditing);
     }
   });
 };
@@ -222,6 +233,8 @@ resetButton.addEventListener("click", () => {
   searchInput.value = "";
   printAllUsers(users);
 });
+
+//final bug to iron out , preventing the user from going back and forth when editing
 
 //handlers for creating amd editing user
 createUserBtn.addEventListener("click", () => {
@@ -237,6 +250,7 @@ createUserBtn.addEventListener("click", () => {
         .editPerson(...inputValues);
       changeFormText("Create a new User", "Create User");
       isEditing = false;
+      disableLink(links[1], isEditing);
     } else {
       users.push(createUser(inputValues));
     }
