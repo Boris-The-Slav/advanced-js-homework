@@ -118,12 +118,12 @@ let rowUserId;
 
 //function for disabling the table nav link when editing
 
-function disableLink(link, isEditing) {
-  if (isEditing) {
-    link.classList.add("disabled-link");
-  } else {
-    link.classList.remove("disabled-link");
-  }
+function disableLink(links, isEditing) {
+  links.forEach((link) => {
+    isEditing
+      ? link.classList.add("disabled-link")
+      : link.classList.remove("disabled-link");
+  });
 }
 
 //function for displaying different elements
@@ -219,7 +219,7 @@ const createTableBodyListener = (arr) => {
       rowUserId = Number(e.target.closest(".user-row").cells[0].innerText);
       editUserDisplay(users, rowUserId);
       isEditing = true;
-      disableLink(links[1], isEditing);
+      disableLink(links, isEditing);
     }
   });
 };
@@ -250,7 +250,7 @@ createUserBtn.addEventListener("click", () => {
         .editPerson(...inputValues);
       changeFormText("Create a new User", "Create User");
       isEditing = false;
-      disableLink(links[1], isEditing);
+      disableLink(links, isEditing);
     } else {
       users.push(createUser(inputValues));
     }
