@@ -32,7 +32,6 @@ Person.prototype.editPerson = function (
   this.country = country;
   this.spouse = spouse;
   this.isMarried = !!this.spouse;
-  this.userId = Math.floor(Math.random() * 899) + 100;
   this.pets = pets;
 };
 
@@ -60,7 +59,7 @@ let users = [
     "USA",
     "Anna Velleti",
     "snake",
-    "lizard"
+    "lizzard"
   ),
   new Person("John", "Marston", 67, "Dallas", "USA", "Janice Marston", "other"),
 ];
@@ -127,8 +126,7 @@ const changePage = (show, hide) => {
 changePage(searchUsersContainer, createUserContainer);
 
 //function for validating inputs
-const validateCreateInputs = (inputs) =>
-  [...inputs].every((el) => !!el.value) ? true : false;
+const validateCreateInputs = (inputs) => inputs.every((el) => !!el.value);
 
 //function for cleaning input fields
 const cleanInputs = (inputs) => {
@@ -216,41 +214,16 @@ const createTableBodyListener = (arr) => {
 };
 createTableBodyListener(users);
 
-//deleting users by id from the input field
-const deleteUserFromInput = (arr, searchInput) => {
-  arr = arr.filter((el) => el.userId !== Number(searchInput.value));
-  searchInput.value = "";
-  printAllUsers(arr);
-};
-
-//handles the searching
-const displaySearch = () => {
-  userTableBody.innerHTML = "";
-  const filteredUsers = users.filter(
-    (user) =>
-      user.fullName.toLowerCase() === searchInput.value.toLowerCase() ||
-      user.userId === Number(searchInput.value)
-  );
-  filteredUsers.length !== 0
-    ? printAllUsers(filteredUsers, users)
-    : (searchErrorMsg.innerText = "User Not Found");
-};
-
 //[event handlers]
 
 //handles for search section
-searchButton.addEventListener("click", displaySearch);
+
 resetButton.addEventListener("click", () => {
   searchInput.value = "";
   printAllUsers(users);
 });
-//handlers for deleting users
-deleteButton.addEventListener("click", () => {
-  deleteUserFromInput(users, deleteInput);
-});
 
-//handlers for creating user section
-
+//handlers for creating amd editing user
 createUserBtn.addEventListener("click", () => {
   if (validateCreateInputs(createInputsMandatory)) {
     const inputValues = [
@@ -270,6 +243,7 @@ createUserBtn.addEventListener("click", () => {
     createErrorMsg.innerText = "";
     printAllUsers(users);
     changePage(searchUsersContainer, createUserContainer);
+    searchInput.value = "";
     cleanInputs([...createInputsMandatory, ...createInputsOptional, petInput]);
   } else {
     createErrorMsg.innerText = "Please fill all fields that are not optional";
@@ -286,6 +260,7 @@ links[1].addEventListener("click", () => {
 
 //responsive searching event listener
 searchInput.addEventListener("input", (e) => {
+  console.log("in thhe money");
   printAllUsers(
     users.filter(
       (user) =>
