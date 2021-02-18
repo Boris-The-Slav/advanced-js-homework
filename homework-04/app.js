@@ -234,8 +234,6 @@ resetButton.addEventListener("click", () => {
   printAllUsers(users);
 });
 
-//final bug to iron out , preventing the user from going back and forth when editing
-
 //handlers for creating amd editing user
 createUserBtn.addEventListener("click", () => {
   if (validateCreateInputs(createInputsMandatory)) {
