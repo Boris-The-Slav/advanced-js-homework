@@ -154,13 +154,18 @@ const repopulateInputs = (user) => {
   cityInput.value = user.city;
   countryInput.value = user.country;
   spouseInput.value = user.spouse;
-  user.pets.forEach((pet) => {
-    [...petInput.options].forEach((option) => {
-      if (option.value === pet) {
-        option.selected = true;
-      }
-    });
-  });
+  // user.pets.forEach((pet) => {
+  //   [...petInput.options].forEach((option) => {
+  //     if (option.value === pet) {
+  //       option.selected = true;
+  //     }
+  //   });
+  // });
+  user.pets.forEach((pet) =>
+    [...petInput.options].forEach(
+      (option) => (option.selected = option.value === pet)
+    )
+  );
 };
 
 //function for changing create user header and button text
