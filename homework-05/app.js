@@ -33,6 +33,16 @@ Person.prototype.editPerson = function (
   this.spouse = spouse;
   this.isMarried = !!this.spouse;
   this.pets = pets;
+  return this;
+};
+//function for capitalizing names
+Person.prototype.capitalizeName = function () {
+  this.firstName =
+    this.firstName[0].toUpperCase() + this.firstName.slice(1).toLowerCase();
+  this.lastName =
+    this.lastName[0].toUpperCase() + this.lastName.slice(1).toLowerCase();
+  this.fullName = `${this.firstName} ${this.lastName}`;
+  return this;
 };
 
 //creating the array of users
@@ -50,7 +60,7 @@ let users = [
     "dog",
     "cat",
   ]),
-  new Person("John", "Marston", 23, "San Antonio", "USA", "", "dog"),
+  new Person("John", "Augustine", 23, "San Antonio", "USA", "", "dog"),
   new Person(
     "Tony",
     "Velleti",
@@ -61,7 +71,7 @@ let users = [
     "snake",
     "lizzard"
   ),
-  new Person("John", "Marston", 67, "Dallas", "USA", "Janice Marston", "other"),
+  new Person("John", "Brooks", 67, "Dallas", "USA", "Janice Brooks", "other"),
 ];
 
 //[dom selectors]
@@ -74,7 +84,8 @@ const deleteButton = document.querySelector("#delete-button");
 const resetButton = document.querySelector("#reset-button");
 const searchErrorMsg = document.querySelector("#error-msg");
 const userTableBody = document.querySelector("#users-table");
-
+const sortButtonsContainer = document.querySelector("#sort-buttons-container");
+const selectSortInput = document.querySelector("#select-sort-input");
 //dom selections for creating user
 const createUserBtn = document.querySelector("#create-user-btn");
 const createErrorMsg = document.querySelector("#create-error-msg");
@@ -116,7 +127,7 @@ let rowUserId;
 //function for disabling the table nav link when editing
 
 function disableLink(links, isEditing) {
-  links.forEach((link) => {
+  links.forEach(link => {
     isEditing
       ? link.classList.add("disabled-link")
       : link.classList.remove("disabled-link");
@@ -133,27 +144,27 @@ const changePage = (show, hide) => {
 changePage(searchUsersContainer, createUserContainer);
 
 //function for validating inputs
-const validateCreateInputs = (inputs) => inputs.every((el) => !!el.value);
+const validateCreateInputs = inputs => inputs.every(el => !!el.value);
 
 //function for cleaning input fields
-const cleanInputs = (inputs) => {
-  inputs.forEach((el) => (el.value = ""));
+const cleanInputs = inputs => {
+  inputs.forEach(el => (el.value = ""));
 };
 
 //function for creating a new user
-const createUser = (allInputs) => new Person(...allInputs);
+const createUser = allInputs => new Person(...allInputs).capitalizeName();
 
 //repopulate inputs
-const repopulateInputs = (user) => {
+const repopulateInputs = user => {
   firstNameInput.value = user.firstName;
   lastNameInput.value = user.lastName;
   ageInput.value = user.age;
   cityInput.value = user.city;
   countryInput.value = user.country;
   spouseInput.value = user.spouse;
-  user.pets.forEach((pet) =>
+  user.pets.forEach(pet =>
     [...petInput.options].forEach(
-      (option) => (option.selected = option.value === pet)
+      option => (option.selected = option.value === pet)
     )
   );
 };
@@ -168,11 +179,35 @@ function changeFormText(headerText, buttonText) {
 const editUserDisplay = (arr, rowUserId) => {
   changeFormText("Edit User", "Finish Editing");
   changePage(createUserContainer, searchUsersContainer);
-  repopulateInputs(arr.find((user) => user.userId === rowUserId));
+  repopulateInputs(arr.find(user => user.userId === rowUserId));
 };
+//function for sorting users and returning a new array
+const sortUsers = (arr, sortType, sortWhat) => {
+  if (!sortType) {
+    printAllUsers(arr);
+    return;
+  }
+  const sortedAscending = [...arr];
+  sortedAscending.sort((a, b) => {
+    if (a[sortWhat] < b[sortWhat]) {
+      return -1;
+    }
+    if (a[sortWhat] > b[sortWhat]) {
+      return 1;
+    }
+    return 0;
+  });
+  if (sortType === "descending") {
+    sortedAscending.reverse();
+  }
+  printAllUsers(sortedAscending);
+};
+function clearSort(buttons) {
+  buttons.forEach(button => (button.checked = false));
+}
 
 //prints only one user
-const printOneUser = (user) => {
+const printOneUser = user => {
   searchErrorMsg.innerText = "";
   userTableBody.innerHTML += `<tr class="user-row">
     <td>${user.userId}</td>
@@ -189,21 +224,21 @@ const printOneUser = (user) => {
 };
 
 //function that refreshes the dom
-const printAllUsers = (arr) => {
+const printAllUsers = arr => {
   userTableBody.innerHTML = "";
-  arr.forEach((user) => printOneUser(user));
+  arr.forEach(user => printOneUser(user));
 };
 //calling the function at start
 printAllUsers(users);
 
 //funciton for adding listeners to the buttons
 //event delegation is magical what else to say
-const createTableBodyListener = (arr) => {
-  userTableBody.addEventListener("click", (e) => {
+const createTableBodyListener = arr => {
+  userTableBody.addEventListener("click", e => {
     //delete buttons
     if (e.target.classList.contains("table-delete-buttons")) {
       const index = arr.findIndex(
-        (el) =>
+        el =>
           el.userId === Number(e.target.closest(".user-row").cells[0].innerText)
       );
       arr.splice(index, 1);
@@ -226,6 +261,7 @@ createTableBodyListener(users);
 resetButton.addEventListener("click", () => {
   searchInput.value = "";
   printAllUsers(users);
+  clearSort([...document.querySelectorAll(".radio-sort-btn")]);
 });
 
 //handlers for creating amd editing user
@@ -235,11 +271,12 @@ createUserBtn.addEventListener("click", () => {
       ...createInputsMandatory,
       ...createInputsOptional,
       ...[...petInput.selectedOptions],
-    ].map((el) => (el = el.value));
+    ].map(el => (el = el.value));
     if (isEditing) {
       users
-        .find((user) => user.userId === rowUserId)
-        .editPerson(...inputValues);
+        .find(user => user.userId === rowUserId)
+        .editPerson(...inputValues)
+        .capitalizeName();
       changeFormText("Create a new User", "Create User");
       isEditing = false;
       disableLink(links, isEditing);
@@ -251,6 +288,7 @@ createUserBtn.addEventListener("click", () => {
     changePage(searchUsersContainer, createUserContainer);
     searchInput.value = "";
     cleanInputs([...createInputsMandatory, ...createInputsOptional, petInput]);
+    clearSort([...document.querySelectorAll(".radio-sort-btn")]);
   } else {
     createErrorMsg.innerText = "Please fill all fields that are not optional";
   }
@@ -265,13 +303,24 @@ links[1].addEventListener("click", () => {
 });
 
 //responsive searching event listener
-searchInput.addEventListener("input", (e) => {
-  console.log("in thhe money");
+searchInput.addEventListener("input", e => {
   printAllUsers(
     users.filter(
-      (user) =>
+      user =>
         user.fullName.toLowerCase().includes(e.target.value.toLowerCase()) ||
         String(user.userId).includes(e.target.value)
     )
   );
+  clearSort([...document.querySelectorAll(".radio-sort-btn")]);
+});
+//sortSeleect event handler
+selectSortInput.addEventListener("click", () => {
+  clearSort([...document.querySelectorAll(".radio-sort-btn")]);
+});
+
+//sort container event listener
+sortButtonsContainer.addEventListener("click", e => {
+  if (e.target.classList.contains("radio-sort-btn")) {
+    sortUsers(users, e.target.value, selectSortInput.value);
+  }
 });
